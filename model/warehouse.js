@@ -10,6 +10,9 @@ const warehouseschema = mongoose.Schema({
         type:String,
         default:null
     },
+    type:{
+        type:String,
+    }
 },{
     timestamps:true
 })
