@@ -41,6 +41,12 @@ export const create_location_routes = async (req,res) => {
 
 function dfs(id,ptoc,ans){
     ans.push[id];
+    const child = ptoc[id]||[];
+
+    child.foreach(cid=>{
+        dfs(cid,ptoc,ans);
+    })
+
 }
 
 export const getwarehouseintree = async(req,res)=>{
@@ -60,6 +66,7 @@ export const getwarehouseintree = async(req,res)=>{
         const ptoc = {};
         a.foreach(loc=>{
             const parentid=loc.parent_location_code?loc.parent_location_code:null;
+            console.log(parentid);
             const cid = loc.location_code;
             if(!ptoc[parentid]){
                 ptoc[parentid]=[];
@@ -67,7 +74,9 @@ export const getwarehouseintree = async(req,res)=>{
             ptoc[parentid].push(cid);
         })
 
-
+        const ans=[];
+        dfs(id,ptoc,ans);
+        console.log(ans);
 
         res.status(201).json({
             "success": true,
