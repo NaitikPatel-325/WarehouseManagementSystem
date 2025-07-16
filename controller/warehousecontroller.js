@@ -7,11 +7,11 @@ export const create_location_routes = async (req,res) => {
             location_code,parent_location_code
         } = req.body;
 
-        var type = "warehouse";
+        var type = "storage";
         console.log(location_code,parent_location_code);
 
         if(parent_location_code==null){
-            type="storage"
+            type="warehouse"
         }
 
         const obj = await warehouse.create(
@@ -34,5 +34,50 @@ export const create_location_routes = async (req,res) => {
     }
     catch(err){
         console.error("in create location routes");
+    }
+}
+
+// void collect_child(int id,unorder)
+
+function dfs(id,ptoc,ans){
+    ans.push[id];
+}
+
+export const getwarehouseintree = async(req,res)=>{
+    try{
+        console.log("in getwarehouse");
+        console.log(req.query.warehouse_code);   
+        
+        const id = req.query.warehouse_code;
+        
+        const obj =await warehouse.find(
+            {location_code:id}
+        );
+        const a =await warehouse.find();
+        ///logic for tree making    
+        console.log(a);
+        
+        const ptoc = {};
+        a.foreach(loc=>{
+            const parentid=loc.parent_location_code?loc.parent_location_code:null;
+            const cid = loc.location_code;
+            if(!ptoc[parentid]){
+                ptoc[parentid]=[];
+            }
+            ptoc[parentid].push(cid);
+        })
+
+
+
+        res.status(201).json({
+            "success": true,
+            "message": "warehouse tree",
+            "data":obj
+        })
+
+
+    }
+    catch{
+        console.error("in get warehouse location routes erroe");
     }
 }

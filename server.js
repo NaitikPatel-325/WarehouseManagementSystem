@@ -6,6 +6,7 @@ import rateLimit from 'express-rate-limit';
 import connectDB from './config/db.js';
 // import useroutes from './routes/userRoutes.js';
 import warehouseRoutes from './routes/warehouseRoutes.js'
+import ProductRoutes from "./routes/productRoutes.js"
 
 dotenv.config();
 connectDB();
@@ -25,6 +26,8 @@ const limiter = rateLimit({
 app.use(limiter);
 // app.use('/api/user', useroutes);
 app.use('/api/',warehouseRoutes);
+app.use('/api/product',ProductRoutes);
+
 
 app.use((req, res) => {
   res.status(404).json({ msg: "Route not found" });
